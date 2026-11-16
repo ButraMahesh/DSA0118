@@ -1,0 +1,28 @@
+
+%%writefile task4.cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+class Money {
+    long long paise;
+public:
+    Money(long long r=0, int p=0) : paise(r*100+p) {}
+    Money operator+(const Money& m) const {
+        return Money(0, paise+m.paise);
+    }
+    bool operator==(const Money& m) const {
+        return paise == m.paise;
+    }
+    friend ostream& operator<<(ostream& out, const Money& m) {
+        out << "Rs " << m.paise/100 << "."
+            << setfill('0') << setw(2) << m.paise%100;
+        return out;
+    }
+};
+int main() {
+    Money a(120,75), b(79,25);
+    Money c = a+b;
+    cout << c << endl;
+    cout << boolalpha << (c==Money(200)) << endl;
+    cout << Money(0,75)+Money(0,50) << endl;
+}
