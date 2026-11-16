@@ -1,0 +1,41 @@
+
+%%writefile task3.cpp
+#include <iostream>
+using namespace std;
+class Auditorium {
+    int r, s;
+    bool** seat;
+public:
+    Auditorium(int a, int b) : r(a), s(b) {
+        seat = new bool*[r];
+        for(int i=0; i<r; i++)
+            seat[i] = new bool[s]{};
+        cout << "Created\n";
+    }
+    void book(int i, int j) {
+        if(i>=0 && i<r && j>=0 && j<s)
+            seat[i][j] = true;
+        cout << "Seat booked\n";
+    }
+    void cancel(int i, int j) {
+        if(i>=0 && i<r && j>=0 && j<s)
+            seat[i][j] = false;
+        cout << "Seat cancelled\n";
+    }
+    ~Auditorium() {
+        for(int i=0; i<r; i++) delete[] seat[i];
+        delete[] seat;
+        cout << "Destroyed\n";
+    }
+};
+int main() {
+    Auditorium a(2, 3);
+    a.book(0, 1);
+    a.cancel(0, 1);
+    {
+        Auditorium b(1, 2);
+    }
+    Auditorium* c = new Auditorium(2, 2);
+    delete c;
+    Auditorium empty(0, 0);
+}
