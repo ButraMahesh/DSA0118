@@ -1,0 +1,64 @@
+
+%%writefile q7.cpp
+#include <iostream>
+#include <cmath>
+#include <stdexcept>
+using namespace std;
+
+class Complex {
+    double r, i;
+public:
+    Complex(double a=0, double b=0) : r(a), i(b) {}
+
+    Complex operator+(Complex c) {
+        return Complex(r+c.r, i+c.i);
+    }
+
+    Complex operator-(Complex c) {
+        return Complex(r-c.r, i-c.i);
+    }
+
+    Complex operator*(Complex c) {
+        return Complex(r*c.r-i*c.i, r*c.i+i*c.r);
+    }
+
+    Complex operator/(Complex c) {
+        double d = c.r*c.r+c.i*c.i;
+        if(d==0) throw runtime_error("Division by zero");
+        return Complex((r*c.r+i*c.i)/d,
+                       (i*c.r-r*c.i)/d);
+    }
+
+    bool operator==(Complex c) {
+        return r==c.r && i==c.i;
+    }
+
+    double magnitude() {
+        return sqrt(r*r+i*i);
+    }
+
+    friend ostream& operator<<(ostream& out, Complex c) {
+        out << c.r << (c.i<0 ? " - j" : " + j") << abs(c.i);
+        return out;
+    }
+};
+
+int main() {
+    Complex R(10), L(0,10), C(0,-10);
+
+    Complex series = R+L+C;
+    Complex parallel = (R*L*C)/(R*L+L*C+C*R);
+
+    cout << "Series: " << series << endl;
+    cout << "Magnitude: " << series.magnitude() << endl;
+    cout << "Parallel: " << parallel << endl;
+    cout << "Magnitude: " << parallel.magnitude() << endl;
+
+    try {
+        cout << R/Complex(0,0);
+    }
+    catch(exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+    return 0;
+}
