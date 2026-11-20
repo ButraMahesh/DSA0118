@@ -1,0 +1,39 @@
+
+%%writefile task10.cpp
+#include <iostream>
+#include <iomanip>
+#include <climits>
+using namespace std;
+
+class MetroFare {
+public:
+    void calculate(long long journeys) {
+        long long total = journeys * 3000;
+        double amount = journeys * 30.0;
+
+        cout << "Journeys: " << journeys << endl;
+        cout << "Integer Total: Rs " << total / 100 << endl;
+
+        cout << fixed << setprecision(2);
+        cout << "Double Total: Rs " << amount << endl;
+        cout << "Difference: Rs "
+             << amount - total / 100.0 << endl;
+
+        if (total > INT_MAX)
+            cout << "32-bit int: Overflow Risk" << endl;
+        else
+            cout << "32-bit int: Safe" << endl;
+
+        cout << "---------------------" << endl;
+    }
+};
+
+int main() {
+    MetroFare metro;
+
+    metro.calculate(20000);
+    metro.calculate(500000);
+    metro.calculate(3000000);
+
+    return 0;
+}
