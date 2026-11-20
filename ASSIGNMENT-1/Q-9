@@ -1,0 +1,96 @@
+
+%%writefile task9.cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MetroCard {
+private:
+    long long balance;
+
+public:
+    MetroCard(long long b) : balance(b) {}
+
+    long long getBalance() const {
+        return balance;
+    }
+
+    void recharge(long long amount) {
+        if (amount < 0) {
+            cout << "Invalid Recharge" << endl;
+            return;
+        }
+        balance += amount;
+    }
+
+    void journey(int zone, int hour) {
+        if (zone < 1 || zone > 3) {
+            cout << "Invalid Zone" << endl;
+            return;
+        }
+
+        if (hour < 0 || hour > 23) {
+            cout << "Invalid Hour" << endl;
+            return;
+        }
+
+        long long fare = zone * 1000;
+        bool peak = (hour >= 8 && hour < 10) ||
+                    (hour >= 17 && hour < 20);
+
+        if (peak)
+            fare += fare * 20 / 100;
+
+        cout << "Fare: Rs " << fare / 100;
+
+        if (balance >= fare + 5000) {
+            balance -= fare;
+            cout << " | Allowed";
+        } else {
+            cout << " | Denied";
+        }
+
+        cout << " | Balance: Rs "
+             << balance / 100 << endl;
+    }
+};
+
+int main() {
+    MetroCard card(20000);
+
+    cout << "Five Journey Test" << endl;
+    card.journey(1, 8);
+    card.journey(2, 11);
+    card.journey(3, 17);
+    card.journey(1, 10);
+    card.journey(2, 20);
+
+    cout << "\nBoundary Tests" << endl;
+    MetroCard test(10000);
+    test.journey(1, 8);
+    test.journey(1, 10);
+    test.journey(1, 17);
+    test.journey(1, 20);
+
+    cout << "\nMinimum Balance Test" << endl;
+    MetroCard minimum(6000);
+    minimum.journey(1, 11);
+
+    cout << "\nInvalid Tests" << endl;
+    card.journey(5, 12);
+    card.journey(1, 25);
+    card.recharge(-1000);
+
+    string hourInput = "abc";
+    try {
+        size_t pos = 0;
+        int hour = stoi(hourInput, &pos);
+        if (pos != hourInput.size())
+            throw invalid_argument("Invalid hour");
+        card.journey(1, hour);
+    } catch (...) {
+        cout << "Invalid Hour Input" << endl;
+    }
+
+    return 0;
+}
