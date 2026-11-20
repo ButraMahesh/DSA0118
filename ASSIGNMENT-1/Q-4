@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a{7}, b{2};
+
+    double result = static_cast<double>(a) / b;
+    cout << "Division: " << result << endl;
+
+    char ch{'C'};
+    cout << "Character: " << ch << endl;
+
+    bool flag{true};
+    cout << boolalpha << "Boolean: " << flag << endl;
+
+    int s{-1};
+    unsigned int u{1};
+
+    cout << "Comparison: "
+         << (static_cast<long long>(s) <
+             static_cast<long long>(u)) << endl;
+
+    return 0;
+}
